@@ -22,9 +22,10 @@ const columns = [{
     title: '操作',
     key: 'operation',
     render(text, record) {
+        var href_url = "#/detail?name=" + record.name;
         return (
             <span>
-        <a href="#/detail">查看-{record.name}-详细</a>
+        <a href={ href_url }>查看-{record.name}-详细</a>
         <span className="ant-divider"></span>
         <a href="#">操作二</a>
         <span className="ant-divider"></span>
@@ -47,6 +48,7 @@ const GridView = React.createClass({
     start() {
         this.setState({ loading: true });
         // 模拟 ajax 请求，完成后清空
+       this.state.data.pop();
         console.log('selectedRowKeys changed: ', this.state.selectedRowKeys);
         setTimeout(() => {
             this.setState({
