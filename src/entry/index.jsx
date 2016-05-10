@@ -19,12 +19,14 @@ import About from '../component/About';
 import User from '../component/User';
 import GridView from '../component/Table';
 import GridRow from '../component/GridRow';
+import UserLogin from '../component/Login';
 
 ReactDOM.render((
     <Router history={hashHistory}>
-        <Route path="/" component={MenuList}>
-            <IndexRoute component={About} />
-            <Route path="about" component={About} />
+    <Route path="/" component={UserLogin}>
+    </Route>
+        <Route path="/index" component={MenuList}>
+            <IndexRoute component={GridView} />
             <Route path="users" component={User} />
             <Route path="table" component={GridView} />
             <Route path="detail" component={GridRow} />
