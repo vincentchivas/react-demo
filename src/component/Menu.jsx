@@ -44,13 +44,13 @@ const MenuListDom = React.createClass({
                         <span> 导航一 </span>
                     </span>
                 }>
-          <Menu.Item key = "about">
+          <Menu.Item key = "/index/about">
             布局控件
             </Menu.Item>
-          < Menu.Item key = "users" >
+          < Menu.Item key = "/index/users" >
             用户表单
           </Menu.Item>
-          < Menu.Item key = "table" > 表格控件 </Menu.Item>
+          < Menu.Item key = "/index/table" > 表格控件 </Menu.Item>
           < Menu.Item key = "4" > 选项4 </Menu.Item>
         </SubMenu>
         <SubMenu key = "sub2" title = {

@@ -24,6 +24,7 @@ import UserLogin from '../component/Login';
 ReactDOM.render((
     <Router history={hashHistory}>
     <Route path="/" component={UserLogin}>
+          <Route path="login" component={UserLogin} />
     </Route>
         <Route path="/index" component={MenuList}>
             <IndexRoute component={GridView} />

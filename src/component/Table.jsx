@@ -22,7 +22,7 @@ const columns = [{
     title: '操作',
     key: 'operation',
     render(text, record) {
-        var href_url = "#/detail?name=" + record.name;
+        var href_url = "#/index/detail?name=" + record.name;
         return (
             <span>
         <a href={ href_url }>查看-{record.name}-详细</a>
@@ -63,8 +63,12 @@ const GridView = React.createClass({
     },
 
     componentDidMount(){
+      var is_login = window.localStorage.getItem('token');
+      if (is_login == null){
+          window.location.href = "#/login"
+      }
       var _this = this;
-      console.log(222)
+      console.log(is_login);
       fetch('http://localhost:8989/users/list').then(function(res){
         return res.json();
       }).then(function(json){

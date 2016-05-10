@@ -9,6 +9,7 @@ var LoginForm = React.createClass({
         console.log('收到表单值：', this.props.form.getFieldsValue());
         var info = this.props.form.getFieldsValue();
         window.location.href = "#/index?name=" + info.username;
+        window.localStorage.setItem('token', 'logined');
     },
 
     render() {
