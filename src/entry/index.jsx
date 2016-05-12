@@ -20,17 +20,29 @@ import User from '../component/User';
 import GridView from '../component/Table';
 import GridRow from '../component/GridRow';
 import UserLogin from '../component/Login';
+import UploadView from '../component/Upload';
+import UserGridView from '../component/UserTable';
+import SalaryGridView from '../component/SalaryTable';
+import SalaryDetail from '../component/SalaryDetail';
 
 ReactDOM.render((
     <Router history={hashHistory}>
     <Route path="/" component={UserLogin}>
           <Route path="login" component={UserLogin} />
     </Route>
-        <Route path="/index" component={MenuList}>
+        <Route path="/admin" component={MenuList}>
             <IndexRoute component={GridView} />
+            <Route path="about" component={About} />
             <Route path="users" component={User} />
             <Route path="table" component={GridView} />
+            <Route path="upload" component={UploadView} />
             <Route path="detail" component={GridRow} />
+            
+             <Route path="usertable" component={UserGridView} />
+             <Route path="salarytable" component={SalaryGridView} />
+             <Route path="gzdetail" component={SalaryDetail} />
+             <Route path="jxdetail" component={SalaryDetail} />
+             <Route path="swdetail" component={SalaryDetail} />
         </Route>
     </Router>
 ), document.getElementById("content"));

@@ -1,43 +1,40 @@
 import React from 'react'
-import { Table, Icon, Button } from 'antd';
+import { Table, Icon, Button} from 'antd';
 
 var fetch = require('node-fetch');
 
-const columns = [{
+const columns = [
+    {
+    title: '税务号码',
+    dataIndex: 'key',
+    key: 'key'
+   },{
     title: '姓名',
     dataIndex: 'name',
-    key: 'name',
-    render(text) {
-        return <a href="#">{text}</a>;
-    }
+    key: 'name'
 }, {
-    title: '年龄',
-    dataIndex: 'age',
-    key: 'age'
+    title: '帐号',
+    dataIndex: 'account',
+    key: 'account'
 }, {
-    title: '住址',
-    dataIndex: 'address',
-    key: 'address'
+    title: '新人事编号',
+    dataIndex: 'passno',
+    key: 'passno'
 }, {
     title: '操作',
     key: 'operation',
     render(text, record) {
-        var href_url = "#/admin/detail?name=" + record.name;
+        var href_url = "#/admin/detail?name=" + record.key;
+        
         return (
             <span>
-        <a href={ href_url }>查看-{record.name}-详细</a>
-        <span className="ant-divider"></span>
-        <a href="#">操作二</a>
-        <span className="ant-divider"></span>
-        <a href="#" className="ant-dropdown-link">
-            更多 <Icon type="down" />
-        </a>
+        <a href={ href_url }>重置-{record.name}-密码</a>
       </span>
         );
     }
 }];
 
-const GridView = React.createClass({
+const UserGridView = React.createClass({
     getInitialState() {
         return {
             selectedRowKeys: [],  // 这里配置默认勾选列
@@ -45,7 +42,7 @@ const GridView = React.createClass({
             data:[]
         };
     },
-    start() {
+    startDel() {
         this.setState({ loading: true });
         // 模拟 ajax 请求，完成后清空
        this.state.data.pop();
@@ -56,6 +53,9 @@ const GridView = React.createClass({
                 loading: false
             });
         }, 1000);
+    },
+     startAdd() {
+        window.location.href = "#/admin/users";
     },
     onSelectChange(selectedRowKeys) {
        //console.log('selectedRowKeys changed: ', selectedRowKeys);
@@ -86,9 +86,12 @@ const GridView = React.createClass({
         return (
             <div>
                 <div style={{ marginBottom: 16 }}>
-                    <Button type="primary" onClick={this.start}
-                            disabled={!hasSelected} loading={loading}>操作</Button>
+                  <Button type="primary" onClick={this.startAdd}>添加</Button>
+                             <span style={{ marginLeft: 8 }}></span>
+                    <Button type="primary" onClick={this.startDel}
+                            disabled={!hasSelected} loading={loading}>删除</Button>
                     <span style={{ marginLeft: 8 }}>{hasSelected ? `选择了 ${selectedRowKeys.length} 个对象` : ''}</span>
+                                 
                 </div>
                 <Table rowSelection={rowSelection} columns={columns} dataSource={this.state.data} />
             </div>
@@ -96,4 +99,4 @@ const GridView = React.createClass({
     }
 });
 
-export default GridView;
+export default UserGridView;

@@ -1,29 +1,51 @@
-const users = [{
-    key: '1',
-    name: 'huangbin',
-    age: '30',
-    address: 'where is the address'
-}, {
-    key: '2',
-    name: 'huangbin1',
-    age: '30',
-    address: 'where is the address'
-}, {
-    key: '3',
-    name: 'huangbin2',
-    age: '30',
-    address: 'where is the address'
+var users = [{
+    key: 'fx001',
+    name: '朱颜',
+    account: 'xxxxxxxxxx',
+    passno: 'yyyyyyyyyyyy'
+}, 
+{
+    key: 'fx002',
+    name: '朱颜2',
+    account: 'xxxxxxxxxx',
+    passno: 'yyyyyyyyyyyy'
+},
+{
+    key: 'fx003',
+    name: '朱颜3',
+    account: 'xxxxxxxxxx',
+    passno: 'yyyyyyyyyyyy'
+},
+{
+    key: 'fx004',
+    name: '朱颜4',
+    account: 'xxxxxxxxxx',
+    passno: 'yyyyyyyyyyyy'
+},
+{
+    key: 'fx005',
+    name: '朱颜5',
+    account: 'xxxxxxxxxx',
+    passno: 'yyyyyyyyyyyy'
 }];
 
-const user = {
-    key: '1',
-    name: 'huangbin',
-    age: '30',
-    address: 'where is the address'
-}
+var user = 
+    {
+    key: 'fx001',
+    name: '朱颜',
+    account: 'xxxxxxxxxx',
+    passno: 'yyyyyyyyyyyy'
+};
+detail = {
+    'id':1,
+    '姓名':'朱艳萍',
+    '税号':'fx021'
+    
+};
 module.exports = {
     // Mock 数据返回
     'GET /users/list': users,
-    'GET /users/huangbin': user
+    'GET /users/fx001': user,
+    'GET /salary/1': detail,
 };
 

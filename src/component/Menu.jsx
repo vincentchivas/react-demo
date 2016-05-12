@@ -38,44 +38,22 @@ const MenuListDom = React.createClass({
              selectedKeys = {[this.state.current]}
              mode = "inline"
         >
-        <SubMenu key = "sub1" title = {
-                    <span>
-                        <Icon type = "mail" />
-                        <span> 导航一 </span>
-                    </span>
-                }>
-          <Menu.Item key = "/index/about">
-            布局控件
-            </Menu.Item>
-          < Menu.Item key = "/index/users" >
-            用户表单
-          </Menu.Item>
-          < Menu.Item key = "/index/table" > 表格控件 </Menu.Item>
-          < Menu.Item key = "4" > 选项4 </Menu.Item>
-        </SubMenu>
-        <SubMenu key = "sub2" title = {
-                    <span>
-                        <Icon type = "appstore" />
-                        <span> 导航二 </span>
-                    </span>
-                }>
-          <Menu.Item key = "5"> 选项5 </Menu.Item>
-          <Menu.Item key = "6"> 选项6 </Menu.Item>
-          < SubMenu key = "sub3" title = "三级导航" >
-            <Menu.Item key = "7" > 选项7 </Menu.Item>
-            <Menu.Item key = "8" > 选项8 </Menu.Item>
-          </SubMenu>
-        </SubMenu>
         <SubMenu key = "sub4" title = {
                     <span >
-                        <Icon type = "setting" />
-                        <span> 导航三 </span>
+                        <Icon type = "appstore" />
+                        <span> 工资管理 </span>
                     </span >
                 }>
-          <Menu.Item key = "9" > 选项9 </Menu.Item>
-          <Menu.Item key = "10" > 选项10 </Menu.Item>
-          <Menu.Item key = "11" > 选项11 </Menu.Item>
-          <Menu.Item key = "12" > 选项12 </Menu.Item>
+          <Menu.Item key = "/admin/upload" > 工资表导入 </Menu.Item>
+          <Menu.Item key = "/admin/salarytable" > 工资查询</Menu.Item>
+        </SubMenu>
+           <SubMenu key = "sub5" title = {
+                    <span >
+                        <Icon type = "setting" />
+                        <span> 用户管理 </span>
+                    </span >
+                }>
+          <Menu.Item key = "/admin/usertable" > 帐号管理 </Menu.Item>
         </SubMenu>
       </Menu>
     )
@@ -86,16 +64,16 @@ const MenuListDom = React.createClass({
 export default class MenuList extends Component {
   render() {
     return (
-      <div> // 这是body 下的 页面最外层 div
-        <div id="react-menu">  // 这是左侧菜单的最外层div
-        <div className="logo">Hell Logo</div>
-           <MenuListDom location={this.props.location} /> // 这里是 ant UI组件显示的地方
+      <div>
+        <div id="react-menu"> 
+        <div className="logo"></div>
+           <MenuListDom location={this.props.location} />
         </div>
-        <div id="react-content"> // 显示区域
+        <div id="react-content">
         {this.props.children}
         </div>
         <div id="react-top">
-            // 顶部登录状态显示区域
+            <h1>欢迎使用工资查询系统！</h1>
         </div>
         </div>
     );
