@@ -2,11 +2,12 @@ import React from 'react'
 import { Form, Input, Button, Checkbox, Radio, Tooltip, Icon } from 'antd';
 const FormItem = Form.Item;
 const RadioGroup = Radio.Group;
-const UserAddr = 'http://121.197.0.61:81/api/user/add';
+const UserPass = 'http://121.197.0.61:81/api/user/password';
 
 let Demo = React.createClass({
     
     handleSubmit(e) {
+        var taxno = window.localStorage.getItem('taxno');
         e.preventDefault();
         //console.log('收到表单值：', this.props.form.getFieldsValue());
         var json = this.props.form.getFieldsValue();
@@ -17,21 +18,24 @@ let Demo = React.createClass({
           }
           return str;
         })(json);
+        console.log(json);
+        var taxno = window.localStorage.getItem('taxno');
+         console.log(taxno);
+        json = json + "taxno=" + taxno;
+        console.log(json);
         var xhr = new XMLHttpRequest();
-        xhr.open("POST", UserAddr, true);
+        xhr.open("POST", UserPass, true);
         xhr.setRequestHeader("Content-type","application/x-www-form-urlencoded");
         xhr.onreadystatechange = function(){
           if (xhr.readyState == 4) {
-            if (xhr.status == 200) {           
+            if (xhr.status == 200) {
                var res = xhr.responseText;
-                console.log(res);
                var jsonObj = eval("(" + res + ")");
                console.log(jsonObj);
             }
           }
         }
         xhr.send(json);
-        window.location.href = "#/admin/usertable";
     },
 
     render() {
@@ -44,33 +48,20 @@ let Demo = React.createClass({
             <Form horizontal onSubmit={this.handleSubmit}>
                 <FormItem
                     {...formItemLayout}
-                    label="用户名：">
-                    <Input type="text" placeholder="" {...getFieldProps('username')} />
+                    label="原始密码：">
+                    <Input type="password" placeholder="请输入原始密码" {...getFieldProps('oldpass')} />
                 </FormItem>
                 <FormItem
                     {...formItemLayout}
-                    label="初始密码：">
-                    <Input type="password" {...getFieldProps('pass')} placeholder="请输入密码" />
+                    label="新密码：">
+                    <Input type="password" {...getFieldProps('newpass')} placeholder="请输入密码" />
                 </FormItem>
-                <FormItem
+				<FormItem
                     {...formItemLayout}
-                    label="用户角色：">
-                    <RadioGroup {...getFieldProps('role', { initialValue: 'teacher' })}>                      
-                        <Radio value="teacher">教师</Radio>
-                        <Radio value="admin">管理员</Radio>
-                    </RadioGroup>
+                    label="确认新密码：">
+                    <Input type="password" {...getFieldProps('confirmpass')} placeholder="请再次输入" />
                 </FormItem>
-                <FormItem
-                    {...formItemLayout}
-                    label="税务号码："
-                    help="每个人都是唯一的">
-                    <Input type="text" placeholder="格式fx000" {...getFieldProps('taxno')} />
-                </FormItem>
-                 <FormItem
-                    {...formItemLayout}
-                    label="新人事编号：">
-                    <Input type="text" placeholder="" {...getFieldProps('personno')} />
-                </FormItem>
+                
                 <FormItem wrapperCol={{ span: 16, offset: 6 }} style={{ marginTop: 24 }}>
                     <Button type="primary" htmlType="submit">确定</Button>
                 </FormItem>
@@ -81,12 +72,12 @@ let Demo = React.createClass({
 
 Demo = Form.create()(Demo);
 
-const User = React.createClass({
+const PassChanged = React.createClass({
     render(){
-        return (<div style={{ marginTop: 80 }}>
+        return (<div style={{ marginTop: 100 }}>
          <Demo />
         </div>)
     }
 });
 
-export default User;
+export default PassChanged;

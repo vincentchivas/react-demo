@@ -1,14 +1,16 @@
 import React from 'react'
 import { Table, Icon, Button, DatePicker, Input } from 'antd';
 
-var fetch = require('node-fetch');
+const SalaryAddr = 'http://121.197.0.61:81/api/salary/list';
+const DownloadAddr = 'http://121.197.0.61:81/api/salary/download';
+
 
 const MonthPicker = DatePicker.MonthPicker;
 const columns = [
     {
     title: '序号',
-    dataIndex: 'id',
-    key: 'id'
+    dataIndex: 'key',
+    key: 'key'
    },
     {
     title: '税务号码',
@@ -25,28 +27,48 @@ const columns = [
     key: '时间'
 },
 {
-    title: '帐号',
-    dataIndex: '帐号',
-    key: '帐号'
+    title: '奖励性绩效',
+    dataIndex: '奖励性绩效',
+    key: '奖励性绩效'
 }, {
-    title: '新人事编号',
-    dataIndex: '新人事编号',
-    key: '新人事编号'
+    title: '代扣所得税',
+    dataIndex: '代扣所得税',
+    key: '代扣所得税'
 }, {
+    title: '实发工资',
+    dataIndex: '实发数',
+    key: '实发数'
+}, 
+{
+    title: '是否查看',
+    dataIndex: 'hascheck',
+    key: 'hascheck'
+}, 
+{
+    title: '是否下载',
+    dataIndex: 'download',
+    key: 'download'
+}, 
+{
     title: '操作',
     key: 'operation',
     render(text, record) {
-      var gz_url = "#/admin/gzdetail?id=" + record.id + "&tmpl=gz";
-      var jx_url = "#/admin/jxdetail?id=" + record.id + "&tmpl=jx";
-      var sw_url = "#/admin/swdetail?id=" + record.id + "&tmpl=sw";
+      var role = window.localStorage.getItem('role');
+      var taxno = window.localStorage.getItem('taxno');
+      var gz_url = "#/"+ role +"/gzdetail?id=" + record.id + "&tmpl=gzb";
+      var jx_url = "#/"+ role +"/jxdetail?id=" + record.id + "&tmpl=jxb";
+      var sw_url = "#/"+ role +"/swdetail?id=" + record.id + "&tmpl=swb";
+      var down_url = DownloadAddr + '?id=' + record.id + '&role=' + role + '&taxno=' + taxno;
         return (
         <span>
         <a href={ jx_url }>查看绩效</a>
         <span className="ant-divider"></span>
         <a href={sw_url}>查看扣税</a>
         <span className="ant-divider"></span>
-        <a href={gz_url} className="ant-dropdown-link">
-            查看工资详细 <Icon type="right" />
+        <a href={gz_url}>查看工资详细 </a>
+        <span className="ant-divider"></span>
+        <a href={down_url} className="ant-dropdown-link">
+            下载 <Icon type="down" />
         </a>
       </span>
         ); 
@@ -55,16 +77,44 @@ const columns = [
 }];
 
 const SalaryGridView = React.createClass({
+    
     getInitialState() {
         return {
             selectedRowKeys: [],  // 这里配置默认勾选列
             loading: false,
             startTime: '',
             endTime: '',
+            keyWord: '',
             data: []
         };
     },
-    search(){
+  
+    search(){    
+      var start_time = this.state.startTime;
+      var end_time = this.state.endTime;
+      var key_word = this.state.keyWord;  
+      var role = window.localStorage.getItem('role');
+      var taxno = window.localStorage.getItem('taxno');
+      var addr = '';
+      if(role == 'admin'){
+          addr = SalaryAddr + "?start=" + start_time + "&end=" + end_time + "&keyword=" + key_word;
+      }else{
+          addr = SalaryAddr + "?start=" + start_time + "&end=" + end_time + "&keyword=" + taxno;
+      }   
+           
+      var _this = this;
+      var xhr = new XMLHttpRequest();
+      xhr.open('GET', addr, true);  
+      xhr.onreadystatechange = function(){
+          if( xhr.readyState == 4 && xhr.status == 200 )
+          {
+              var res = xhr.responseText;
+              var jsonObj = eval("(" + res + ")");
+              _this.setState({data:jsonObj.data});
+             
+          }
+      }
+      xhr.send();
         //this.setState({'data': []});
     },
     getStartTime(value){
@@ -75,8 +125,8 @@ const SalaryGridView = React.createClass({
         this.setState({'endTime': value});
     },
     getKeyWord(e){
-        //this.setState({name: e.target.value});
-        console.log('value is', e.target.value);
+        this.setState({keyWord: e.target.value});
+        //console.log('value is', e.target.value);
     },
     startDel() {
         this.setState({ loading: true });
@@ -101,13 +151,27 @@ const SalaryGridView = React.createClass({
       if (is_login == null){
           window.location.href = "#/login"
       }
+      var role = window.localStorage.getItem('role');
+      var taxno = window.localStorage.getItem('taxno');
+      var addr = '';
+      if(role == 'admin'){
+          addr = SalaryAddr;
+      }else{
+          addr = SalaryAddr + '?keyword=' + taxno;
+      }   
       var _this = this;
-      console.log(is_login);
-      fetch('http://www.zhuanfa88.com:8080/ts/api/salary/list').then(function(res){
-        return res.json();
-      }).then(function(json){
-        _this.setState({data:json.data});
-      });
+      var xhr = new XMLHttpRequest();
+      xhr.open('GET', addr, true);  
+      xhr.onreadystatechange = function(){
+          if( xhr.readyState == 4 && xhr.status == 200 )
+          {
+              var res = xhr.responseText;
+              var jsonObj = eval("(" + res + ")");
+              _this.setState({data:jsonObj.data});
+             
+          }
+      }
+      xhr.send();
     },
     render() {
         const { loading, selectedRowKeys } = this.state;
@@ -116,8 +180,9 @@ const SalaryGridView = React.createClass({
             onChange: this.onSelectChange
         };
       const hasSelected = selectedRowKeys.length > 0;
-
-        return (
+       var role = window.localStorage.getItem('role');
+       if( role == 'admin' ){
+           return (
             <div>
                 <div style={{ marginBottom: 16 }}>
                   <span>开始日期：</span>
@@ -139,6 +204,23 @@ const SalaryGridView = React.createClass({
                 <Table rowSelection={rowSelection} columns={columns} dataSource={this.state.data} />
             </div>
         );
+       }
+       else{
+          return (
+            <div>
+                <div >
+                  <span>开始日期：</span>
+                  <MonthPicker onChange={this.getStartTime} />
+                   <span style={{ marginLeft: 4 }}>结束日期：</span>
+                   <MonthPicker onChange={this.getEndTime}  />
+                   <span style={{ marginLeft: 4 }}></span>                 
+                   <Button type="primary" onClick={this.search}>查询</Button>
+                </div>                 
+                  
+                <Table style={{ marginTop: 8 }} rowSelection={rowSelection} columns={columns} dataSource={this.state.data} />
+            </div>
+        );  
+       }       
     }
 });
 

@@ -16,5 +16,7 @@ Thumbs.db
 *.swo
 *.pyc
 *.pyo
+key.rsa
+deploy.sh
 node_modules
 dist

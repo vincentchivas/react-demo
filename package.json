@@ -12,9 +12,7 @@
     "es3ify-loader": "^0.1.0",
     "node-fetch": "^1.5.1",
     "react": "0.14.x",
-    "react-dom": "0.14.x",
-    "react-router": "2.4.0",
-    "node-fetch": "1.5.1"
+    "react-dom": "0.14.x"
   },
   "devDependencies": {
     "dora": "0.3.x",

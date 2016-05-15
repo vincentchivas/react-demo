@@ -15,15 +15,15 @@ import '../component/App.less';
 import { Router, Route, Link, hashHistory, IndexRoute } from 'react-router';
 
 // 这里是需要显示的内容模板 About 和 Users
-import About from '../component/About';
 import User from '../component/User';
-import GridView from '../component/Table';
-import GridRow from '../component/GridRow';
 import UserLogin from '../component/Login';
 import UploadView from '../component/Upload';
 import UserGridView from '../component/UserTable';
+import UserDetail from '../component/UserDetail';
 import SalaryGridView from '../component/SalaryTable';
 import SalaryDetail from '../component/SalaryDetail';
+
+import PassChanged from '../component/PassWord'
 
 ReactDOM.render((
     <Router history={hashHistory}>
@@ -31,18 +31,23 @@ ReactDOM.render((
           <Route path="login" component={UserLogin} />
     </Route>
         <Route path="/admin" component={MenuList}>
-            <IndexRoute component={GridView} />
-            <Route path="about" component={About} />
-            <Route path="users" component={User} />
-            <Route path="table" component={GridView} />
-            <Route path="upload" component={UploadView} />
-            <Route path="detail" component={GridRow} />
-            
-             <Route path="usertable" component={UserGridView} />
+            <IndexRoute component={SalaryGridView} />
+            <Route path="upload" component={UploadView} />                    
+             <Route path="usertable" component={UserGridView} />         
+             <Route path="userdetail" component={UserDetail} />
+             <Route path="useradd" component={User} />
              <Route path="salarytable" component={SalaryGridView} />
              <Route path="gzdetail" component={SalaryDetail} />
              <Route path="jxdetail" component={SalaryDetail} />
              <Route path="swdetail" component={SalaryDetail} />
+        </Route>
+         <Route path="/teacher" component={MenuList}>
+            <IndexRoute component={SalaryGridView} />
+             <Route path="salarytable" component={SalaryGridView} />
+             <Route path="gzdetail" component={SalaryDetail} />
+             <Route path="jxdetail" component={SalaryDetail} />
+             <Route path="swdetail" component={SalaryDetail} />
+             <Route path="password" component={PassChanged} />
         </Route>
     </Router>
 ), document.getElementById("content"));

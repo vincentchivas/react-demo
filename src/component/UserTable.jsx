@@ -1,34 +1,36 @@
 import React from 'react'
-import { Table, Icon, Button} from 'antd';
+import { Table, Icon, Button, Input } from 'antd';
 
-var fetch = require('node-fetch');
-
+const UserDel = 'http://121.197.0.61:81/api/user/del';
+const UserList = 'http://121.197.0.61:81/api/user/list'
 const columns = [
     {
-    title: '税务号码',
+    title: '序号',
     dataIndex: 'key',
     key: 'key'
+   },
+    {
+    title: '税务号码',
+    dataIndex: 'taxno',
+    key: 'taxno'
    },{
     title: '姓名',
-    dataIndex: 'name',
-    key: 'name'
-}, {
-    title: '帐号',
-    dataIndex: 'account',
-    key: 'account'
+    dataIndex: 'username',
+    key: 'username'
 }, {
     title: '新人事编号',
-    dataIndex: 'passno',
-    key: 'passno'
+    dataIndex: 'personno',
+    key: 'personno'
 }, {
     title: '操作',
     key: 'operation',
     render(text, record) {
-        var href_url = "#/admin/detail?name=" + record.key;
+        var href_url = "#/admin/userdetail?id=" + record.key;
         
         return (
-            <span>
-        <a href={ href_url }>重置-{record.name}-密码</a>
+            <span>  
+        <a href={ href_url }>查看详情</a>
+
       </span>
         );
     }
@@ -42,23 +44,58 @@ const UserGridView = React.createClass({
             data:[]
         };
     },
+     getKeyWord(e){
+        this.setState({keyWord: e.target.value});
+        //console.log('value is', e.target.value);
+    },
     startDel() {
-        this.setState({ loading: true });
-        // 模拟 ajax 请求，完成后清空
-       this.state.data.pop();
-        console.log('selectedRowKeys changed: ', this.state.selectedRowKeys);
-        setTimeout(() => {
-            this.setState({
-                selectedRowKeys: [],
-                loading: false
-            });
-        }, 1000);
+        this.setState({ loading: false });
+        //console.log('收到表单值：', this.props.form.getFieldsValue());
+        var array = this.state.selectedRowKeys;
+        var json = "itemids=" + array.toString();
+        var _this = this;
+        var xhr = new XMLHttpRequest();
+        xhr.open("POST", UserDel, true);
+        xhr.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+        xhr.onreadystatechange = function(){
+          if (xhr.readyState == 4) {
+            if (xhr.status == 200) {
+               var res = xhr.responseText;
+               var jsonObj = eval("(" + res + ")");
+                _this.setState({data:jsonObj.data});
+               
+            }
+          }
+        }
+        xhr.send(json);
+        // 模拟 ajax 请求，完成后清空       
     },
      startAdd() {
-        window.location.href = "#/admin/users";
+        window.location.href = "#/admin/useradd";
     },
+    
+    startSearch(){    
+      
+      var key_word = this.state.keyWord; 
+      var addr = UserList + "?keyword=" + key_word;       
+      var _this = this;
+      var xhr = new XMLHttpRequest();
+      xhr.open('GET', addr, true);  
+      xhr.onreadystatechange = function(){
+          if( xhr.readyState == 4 && xhr.status == 200 )
+          {
+              var res = xhr.responseText;
+              var jsonObj = eval("(" + res + ")");
+              _this.setState({data:jsonObj.data});
+             
+          }
+      }
+      xhr.send();
+        //this.setState({'data': []});
+    },
+    
     onSelectChange(selectedRowKeys) {
-       //console.log('selectedRowKeys changed: ', selectedRowKeys);
+       console.log('selectedRowKeys changed: ', selectedRowKeys);
         this.setState({ selectedRowKeys });
     },
 
@@ -69,11 +106,20 @@ const UserGridView = React.createClass({
       }
       var _this = this;
       console.log(is_login);
-      fetch('http://localhost:8989/users/list').then(function(res){
-        return res.json();
-      }).then(function(json){
-        _this.setState({data:json});
-      });
+     var xhr = new XMLHttpRequest();
+      xhr.open('GET', UserList, true);  
+      xhr.onreadystatechange = function(){
+          if( xhr.readyState == 4 && xhr.status == 200 )
+          {
+              var res = xhr.responseText;
+              var jsonObj = eval("(" + res + ")");
+              _this.setState({data:jsonObj.data});
+             
+          }
+      }
+      xhr.send();
+     
+     
     },
     render() {
         const { loading, selectedRowKeys } = this.state;
@@ -86,10 +132,13 @@ const UserGridView = React.createClass({
         return (
             <div>
                 <div style={{ marginBottom: 16 }}>
+                 <Input  id="SearchInput" placeholder="请输入税号或者姓名" onChange={this.getKeyWord} />
+                  <Button type="primary" onClick={this.startSearch}>查询</Button>
+                             <span style={{ marginLeft: 8 }}></span>
                   <Button type="primary" onClick={this.startAdd}>添加</Button>
                              <span style={{ marginLeft: 8 }}></span>
                     <Button type="primary" onClick={this.startDel}
-                            disabled={!hasSelected} loading={loading}>删除</Button>
+                            disabled={!hasSelected}>删除</Button>
                     <span style={{ marginLeft: 8 }}>{hasSelected ? `选择了 ${selectedRowKeys.length} 个对象` : ''}</span>
                                  
                 </div>

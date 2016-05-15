@@ -29,7 +29,10 @@ const MenuListDom = React.createClass({
     });
   },
   render: function(){
-    return (
+    console.log(this.props.role);
+    var role = this.props.role;
+    if( role == 'admin' ){
+       return (
       <Menu onClick = {this.handleClick}
              style = {{width: 240}}
              openKeys = {this.state.openKeys}
@@ -38,7 +41,7 @@ const MenuListDom = React.createClass({
              selectedKeys = {[this.state.current]}
              mode = "inline"
         >
-        <SubMenu key = "sub4" title = {
+        <SubMenu key = "sub1" title = {
                     <span >
                         <Icon type = "appstore" />
                         <span> 工资管理 </span>
@@ -47,7 +50,7 @@ const MenuListDom = React.createClass({
           <Menu.Item key = "/admin/upload" > 工资表导入 </Menu.Item>
           <Menu.Item key = "/admin/salarytable" > 工资查询</Menu.Item>
         </SubMenu>
-           <SubMenu key = "sub5" title = {
+           <SubMenu key = "sub2" title = {
                     <span >
                         <Icon type = "setting" />
                         <span> 用户管理 </span>
@@ -57,23 +60,63 @@ const MenuListDom = React.createClass({
         </SubMenu>
       </Menu>
     )
+    }
+   else{
+       return (
+      <Menu onClick = {this.handleClick}
+             style = {{width: 240}}
+             openKeys = {this.state.openKeys}
+             onOpen = {this.onToggle}
+             onClose = {this.onToggle}
+             selectedKeys = {[this.state.current]}
+             mode = "inline"
+        >
+        <SubMenu key = "sub1" title = {
+                    <span >
+                        <Icon type = "appstore" />
+                        <span> 工资管理 </span>
+                    </span >
+                }>
+          <Menu.Item key = "/teacher/salarytable" > 工资查询</Menu.Item>
+        </SubMenu>
+           <SubMenu key = "sub2" title = {
+                    <span >
+                        <Icon type = "setting" />
+                        <span> 系统设置 </span>
+                    </span >
+                }>
+          <Menu.Item key = "/teacher/password" > 密码设置 </Menu.Item>
+        </SubMenu>
+      </Menu>
+    )
+   }
   }
 });
 
 // 定义了要输出的类 MenuList （这个要用于路由配置中）
 export default class MenuList extends Component {
   render() {
+    console.log(this.props.location.pathname);
+    var pathname = this.props.location.pathname;
+    var role = '';
+    if(pathname.startsWith('/admin')){
+      role = 'admin';
+    }else if(pathname.startsWith('/teacher'))
+    {
+      role = 'teacher';
+    }
     return (
       <div>
         <div id="react-menu"> 
         <div className="logo"></div>
-           <MenuListDom location={this.props.location} />
+           <MenuListDom location={this.props.location} role={role}/>
         </div>
         <div id="react-content">
         {this.props.children}
         </div>
         <div id="react-top">
-            <h1>欢迎使用工资查询系统！</h1>
+             <a id='zhuxiao' href='#/login'>注销登陆</a>
+            <h1 id='top-title'>欢迎使用工资查询系统！</h1>
         </div>
         </div>
     );

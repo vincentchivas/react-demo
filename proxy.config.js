@@ -1,6 +1,7 @@
 var users = [{
-    key: 'fx001',
-    name: '朱颜',
+    key: 0,
+    taxno: 'fx001',
+    username: '朱颜',
     account: 'xxxxxxxxxx',
     passno: 'yyyyyyyyyyyy'
 }, 
