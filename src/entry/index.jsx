@@ -21,7 +21,7 @@ import UploadView from '../component/Upload';
 import UserGridView from '../component/UserTable';
 import UserDetail from '../component/UserDetail';
 import SalaryGridView from '../component/SalaryTable';
-import SalaryDetail from '../component/SalaryDetail';
+import SalaryDetailView from '../component/SalaryDetailTable';
 
 import PassChanged from '../component/PassWord'
 
@@ -37,16 +37,16 @@ ReactDOM.render((
              <Route path="userdetail" component={UserDetail} />
              <Route path="useradd" component={User} />
              <Route path="salarytable" component={SalaryGridView} />
-             <Route path="gzdetail" component={SalaryDetail} />
-             <Route path="jxdetail" component={SalaryDetail} />
-             <Route path="swdetail" component={SalaryDetail} />
+             <Route path="gzdetail" component={SalaryDetailView} />
+             <Route path="jxdetail" component={SalaryDetailView} />
+             <Route path="swdetail" component={SalaryDetailView} />
         </Route>
          <Route path="/teacher" component={MenuList}>
             <IndexRoute component={SalaryGridView} />
              <Route path="salarytable" component={SalaryGridView} />
-             <Route path="gzdetail" component={SalaryDetail} />
-             <Route path="jxdetail" component={SalaryDetail} />
-             <Route path="swdetail" component={SalaryDetail} />
+             <Route path="gzdetail" component={SalaryDetailView} />
+             <Route path="jxdetail" component={SalaryDetailView} />
+             <Route path="swdetail" component={SalaryDetailView} />
              <Route path="password" component={PassChanged} />
         </Route>
     </Router>

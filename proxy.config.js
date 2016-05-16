@@ -47,6 +47,5 @@ module.exports = {
     // Mock 数据返回
     'GET /users/list': users,
     'GET /users/fx001': user,
-    'GET /salary/1': detail,
 };
 

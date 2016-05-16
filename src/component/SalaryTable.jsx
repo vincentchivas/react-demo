@@ -3,6 +3,7 @@ import { Table, Icon, Button, DatePicker, Input } from 'antd';
 
 const SalaryAddr = 'http://121.197.0.61:81/api/salary/list';
 const DownloadAddr = 'http://121.197.0.61:81/api/salary/download';
+const SalaryDel = 'http://121.197.0.61:81/api/salary/del';
 
 
 const MonthPicker = DatePicker.MonthPicker;
@@ -129,16 +130,29 @@ const SalaryGridView = React.createClass({
         //console.log('value is', e.target.value);
     },
     startDel() {
-        this.setState({ loading: true });
+
         // 模拟 ajax 请求，完成后清空
-       this.state.data.pop();
-        console.log('selectedRowKeys changed: ', this.state.selectedRowKeys);
-        setTimeout(() => {
-            this.setState({
-                selectedRowKeys: [],
-                loading: false
-            });
-        }, 1000);
+        this.setState({ loading: false });
+        
+        var array = this.state.selectedRowKeys;
+        var json = "itemids=" + array.toString();
+        console.log(json);
+        var _this = this;
+        var xhr = new XMLHttpRequest();
+        xhr.open("POST", SalaryDel, true);
+        xhr.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+        xhr.onreadystatechange = function(){
+          if (xhr.readyState == 4) {
+            if (xhr.status == 200) {
+               var res = xhr.responseText;
+               var jsonObj = eval("(" + res + ")");
+                _this.setState({data:jsonObj.data});
+               
+            }
+          }
+        }
+        xhr.send(json);
+        // 模拟 ajax 请求，完成后清空 
     },
      
     onSelectChange(selectedRowKeys) {

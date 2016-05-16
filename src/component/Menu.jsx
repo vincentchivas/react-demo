@@ -96,15 +96,7 @@ const MenuListDom = React.createClass({
 // 定义了要输出的类 MenuList （这个要用于路由配置中）
 export default class MenuList extends Component {
   render() {
-    console.log(this.props.location.pathname);
-    var pathname = this.props.location.pathname;
-    var role = '';
-    if(pathname.startsWith('/admin')){
-      role = 'admin';
-    }else if(pathname.startsWith('/teacher'))
-    {
-      role = 'teacher';
-    }
+    var role = window.localStorage.getItem('role');
     return (
       <div>
         <div id="react-menu"> 
