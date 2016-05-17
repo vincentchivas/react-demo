@@ -2,7 +2,9 @@ import React from 'react'
 import { Form, Input, Button, Checkbox, Radio, Tooltip, Icon } from 'antd';
 const FormItem = Form.Item;
 const RadioGroup = Radio.Group;
-const UserAddr = 'http://121.197.0.61:81/api/user/add';
+
+var config = require('./setting.js');
+const UserAddr = config.host + '/api/user/add';
 
 let Demo = React.createClass({
     

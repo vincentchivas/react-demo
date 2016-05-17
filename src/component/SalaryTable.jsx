@@ -1,17 +1,24 @@
 import React from 'react'
 import { Table, Icon, Button, DatePicker, Input } from 'antd';
 
-const SalaryAddr = 'http://121.197.0.61:81/api/salary/list';
-const DownloadAddr = 'http://121.197.0.61:81/api/salary/download';
-const SalaryDel = 'http://121.197.0.61:81/api/salary/del';
+var config = require('./setting.js');
+const SalaryAddr =  config.host + '/api/salary/list';
+const DownloadAddr = config.host + '/api/salary/download';
+const SalaryDel = config.host + '/api/salary/del';
 
 
 const MonthPicker = DatePicker.MonthPicker;
 const columns = [
     {
-    title: '序号',
+    title: '自动编号',
     dataIndex: 'key',
     key: 'key'
+   },
+    {
+    title: '序号',
+    dataIndex: '序号',
+    key: '序号',
+     sorter: (a, b) => a.序号 - b.序号
    },
     {
     title: '税务号码',
@@ -111,8 +118,8 @@ const SalaryGridView = React.createClass({
           {
               var res = xhr.responseText;
               var jsonObj = eval("(" + res + ")");
-              _this.setState({data:jsonObj.data});
-             
+              _this.setState({data:jsonObj.data.items});
+              //_this.setState({total:jsonObj.data.total});
           }
       }
       xhr.send();
@@ -146,7 +153,8 @@ const SalaryGridView = React.createClass({
             if (xhr.status == 200) {
                var res = xhr.responseText;
                var jsonObj = eval("(" + res + ")");
-                _this.setState({data:jsonObj.data});
+                _this.setState({data:jsonObj.data.items});
+                //_this.setState({total:jsonObj.data.total});
                
             }
           }
@@ -181,7 +189,8 @@ const SalaryGridView = React.createClass({
           {
               var res = xhr.responseText;
               var jsonObj = eval("(" + res + ")");
-              _this.setState({data:jsonObj.data});
+               _this.setState({data:jsonObj.data.items});
+               //_this.setState({total:jsonObj.data.total});
              
           }
       }
@@ -194,6 +203,10 @@ const SalaryGridView = React.createClass({
             onChange: this.onSelectChange
         };
       const hasSelected = selectedRowKeys.length > 0;
+      const pagination = {
+          pageSize : 20,
+          showSizeChanger: true
+          };
        var role = window.localStorage.getItem('role');
        if( role == 'admin' ){
            return (
@@ -215,7 +228,7 @@ const SalaryGridView = React.createClass({
                     <span style={{ marginLeft: 8 }}>{hasSelected ? `选择了 ${selectedRowKeys.length} 个对象` : ''}</span>       
                   
                 </div>
-                <Table rowSelection={rowSelection} columns={columns} dataSource={this.state.data} />
+                <Table rowSelection={rowSelection} columns={columns} dataSource={this.state.data} pagination={pagination} />
             </div>
         );
        }
@@ -231,7 +244,7 @@ const SalaryGridView = React.createClass({
                    <Button type="primary" onClick={this.search}>查询</Button>
                 </div>                 
                   
-                <Table style={{ marginTop: 8 }} rowSelection={rowSelection} columns={columns} dataSource={this.state.data} />
+                <Table style={{ marginTop: 8 }} rowSelection={rowSelection} columns={columns} dataSource={this.state.data} pagination={pagination} />
             </div>
         );  
        }       

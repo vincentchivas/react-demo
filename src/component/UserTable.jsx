@@ -1,8 +1,8 @@
 import React from 'react'
 import { Table, Icon, Button, Input } from 'antd';
-
-const UserDel = 'http://121.197.0.61:81/api/user/del';
-const UserList = 'http://121.197.0.61:81/api/user/list'
+var config = require('./setting.js');
+const UserDel =  config.host + '/api/user/del';
+const UserList = config.host + '/api/user/list'
 const columns = [
     {
     title: '序号',

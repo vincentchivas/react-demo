@@ -1,6 +1,9 @@
 import React from 'react'
 import { Table } from 'antd';
-const salaryAddr = 'http://121.197.0.61:81/api/salary/detail';
+
+var config = require('./setting.js'); 
+
+const salaryAddr = config.host + '/api/salary/detail';
 
 const SalaryDetailView = React.createClass({
   getInitialState(){

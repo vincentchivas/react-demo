@@ -1,19 +1,27 @@
 import React from 'react'
 import { Upload, Icon, message } from 'antd';
-
+var config = require('./setting.js');
 const Dragger = Upload.Dragger;
-
+const uploadAddr = config.host + '/api/file/upload';
+const formatFile = config.host + '/media/2016年5月工资.xlsx'
 const props = {
   name: 'file',
   showUploadList: false,
-  action: 'http://121.197.0.61:81/api/file/upload',
+  action: uploadAddr,
   onChange(info) {
     if (info.file.status !== 'uploading') {
       console.log(info.file, info.fileList);
     }
     if (info.file.status === 'done') {
       console.log(info.file.response);
-      message.success(`${info.file.name} 上传成功。`);
+      var msg = info.file.response.msg;
+      var status = info.file.response.status;
+      if(status == 0){
+         message.success(`${info.file.name} 上传成功。`);
+      }else{
+         message.error(`${msg}, 上传失败。`);
+      }
+     
     } else if (info.file.status === 'error') {
       var msg = info.file.response.msg;
       message.error(`${msg}, ${info.file.name} 上传失败。`);
@@ -27,7 +35,7 @@ const UploadView = React.createClass({
 		
 		return (
 			<div>
-   <a id='gzbyb' href='http://a.zhuanfa88.com:8080/media/data.xlsx'>请下载参考工资表样表</a>
+   <a id='gzbyb' href={ formatFile }>请下载参考工资表样表</a>
     <div style={{ marginTop: 25, height: 300 }}>
       <Dragger {...props}>
         <p className="ant-upload-drag-icon">

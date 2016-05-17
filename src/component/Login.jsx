@@ -1,7 +1,9 @@
 import React from 'react'
 import { Form, Input, Button } from 'antd';
 const FormItem = Form.Item;
-const LoginAddr = 'http://121.197.0.61:81/api/user/login';
+var config = require('./setting.js');
+
+const LoginAddr = config.host + '/api/user/login';
 
 var LoginForm = React.createClass({
   
@@ -56,7 +58,7 @@ var LoginForm = React.createClass({
                  window.localStorage.setItem('taxno', 'fx000');
                  window.location.href = "#/admin";
            
-        
+       
     },
  componentDidMount(){
       window.localStorage.removeItem('token');
