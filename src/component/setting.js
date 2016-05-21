@@ -1,4 +1,4 @@
 var Config = {
-	'host': 'http://121.197.0.61:81',
+	'host': 'http://10.211.55.3:80',
 }
-module.exports = Config; 
+module.exports = Config;
