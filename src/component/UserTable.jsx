@@ -5,14 +5,16 @@ const UserDel =  config.host + '/api/user/del';
 const UserList = config.host + '/api/user/list'
 const columns = [
     {
-    title: '序号',
+    title: '系统编号',
     dataIndex: 'key',
-    key: 'key'
+    key: 'key',
+    sorter: (a, b) => a.key - b.key
    },
     {
     title: '税务号码',
     dataIndex: 'taxno',
-    key: 'taxno'
+    key: 'taxno',
+    sorter: (a, b) => a.taxno - b.taxno
    },{
     title: '姓名',
     dataIndex: 'username',
@@ -127,6 +129,10 @@ const UserGridView = React.createClass({
             selectedRowKeys,
             onChange: this.onSelectChange
         };
+         const pagination = {
+          pageSize : 20,
+          showSizeChanger: true
+          };
       const hasSelected = selectedRowKeys.length > 0;
 
         return (
@@ -142,7 +148,7 @@ const UserGridView = React.createClass({
                     <span style={{ marginLeft: 8 }}>{hasSelected ? `选择了 ${selectedRowKeys.length} 个对象` : ''}</span>
                                  
                 </div>
-                <Table rowSelection={rowSelection} columns={columns} dataSource={this.state.data} />
+                <Table rowSelection={rowSelection} columns={columns} dataSource={this.state.data} pagination={pagination} />
             </div>
         );
     }

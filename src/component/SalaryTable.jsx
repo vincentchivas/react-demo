@@ -10,7 +10,7 @@ const SalaryDel = config.host + '/api/salary/del';
 const MonthPicker = DatePicker.MonthPicker;
 const columns = [
     {
-    title: '自动编号',
+    title: '系统编号',
     dataIndex: 'key',
     key: 'key'
    },

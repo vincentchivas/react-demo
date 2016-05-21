@@ -31,8 +31,15 @@ const props = {
 
 
 const UploadView = React.createClass({
-	render(){
-		
+
+  componentDidMount(){
+      var is_login = window.localStorage.getItem('token');
+      if (is_login == null){
+          window.location.href = "#/login"
+      }
+     },
+     
+	render(){		
 		return (
 			<div>
    <a id='gzbyb' href={ formatFile }>请下载参考工资表样表</a>

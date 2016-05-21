@@ -10,7 +10,7 @@ var LoginForm = React.createClass({
     handleSubmit(e) {
         e.preventDefault();
         console.log('收到表单值：', this.props.form.getFieldsValue());
-        /*
+    
         var json = this.props.form.getFieldsValue();
         var taxno = json['taxno']
         console.log(taxno);
@@ -51,13 +51,12 @@ var LoginForm = React.createClass({
           }
         }
         xhr.send(json);
-       
-       */
+       /*
         window.localStorage.setItem('token', 'logined');
                  window.localStorage.setItem('role', 'admin');
                  window.localStorage.setItem('taxno', 'fx000');
                  window.location.href = "#/admin";
-           
+         */  
        
     },
  componentDidMount(){
