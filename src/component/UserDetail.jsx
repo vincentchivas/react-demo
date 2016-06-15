@@ -1,5 +1,5 @@
 import React from 'react'
-import { Form, Input, Button, Checkbox, Radio, Tooltip, Icon } from 'antd';
+import { Form, Input, Button, Checkbox, Radio, Tooltip, Icon, message } from 'antd';
 const FormItem = Form.Item;
 const RadioGroup = Radio.Group;
 var config = require('./setting.js');
@@ -10,6 +10,10 @@ let Demo = React.createClass({
         e.preventDefault();
         //console.log('收到表单值：', this.props.form.getFieldsValue());
         var json = this.props.form.getFieldsValue();
+        if(json.taxno == ""||json.password==""){
+            message.error(`税务号码和密码都不能为空。`);
+            return
+        }
          json = (function(obj){ // 转成post需要的字符串.
           var str = "";
           for(var prop in obj){
@@ -17,14 +21,14 @@ let Demo = React.createClass({
           }
           return str;
         })(json);
-       
+
         var url = UserEdit + this.state.id;
         var xhr = new XMLHttpRequest();
         xhr.open("POST", url, true);
         xhr.setRequestHeader("Content-type","application/x-www-form-urlencoded");
         xhr.onreadystatechange = function(){
           if (xhr.readyState == 4) {
-            if (xhr.status == 200) {           
+            if (xhr.status == 200) {
                var res = xhr.responseText;
                 console.log(res);
                var jsonObj = eval("(" + res + ")");
@@ -36,18 +40,18 @@ let Demo = React.createClass({
         window.location.href = "#/admin/usertable";
     },
 
-    
-      getInitialState(){    
+
+      getInitialState(){
        return {
            'id': this.props.id,
            'data': []
        }
    },
-        
+
      componentDidMount(){
-      var url = UserEdit + this.state.id;   
+      var url = UserEdit + this.state.id;
       var xhr = new XMLHttpRequest();
-      xhr.open('GET', url, true);  
+      xhr.open('GET', url, true);
       var _this = this;
       xhr.onreadystatechange = function(){
           if( xhr.readyState == 4 && xhr.status == 200 )
@@ -56,12 +60,12 @@ let Demo = React.createClass({
               var jsonObj = eval("(" + res + ")");
               console.log('xhr');
               console.log(jsonObj);
-              _this.setState({data:jsonObj.data});            
+              _this.setState({data:jsonObj.data});
           }
       }
       xhr.send();
     },
-    
+
     render() {
         const { getFieldProps } = this.props.form;
         const formItemLayout = {
@@ -85,7 +89,7 @@ let Demo = React.createClass({
                 <FormItem
                     {...formItemLayout}
                     label="用户角色：">
-                    <RadioGroup {...getFieldProps('role', { initialValue: 'teacher' })}>                      
+                    <RadioGroup {...getFieldProps('role', { initialValue: 'teacher' })}>
                         <Radio value="teacher">教师</Radio>
                         <Radio value="admin">管理员</Radio>
                     </RadioGroup>
@@ -117,7 +121,7 @@ const UserDetail = React.createClass({
        return {
            'id': id
        }
-   },  
+   },
     render(){
         return (<div style={{ marginTop: 80 }}>
          <Demo id={this.state.id} />

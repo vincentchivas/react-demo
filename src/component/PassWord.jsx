@@ -1,12 +1,12 @@
 import React from 'react'
-import { Form, Input, Button, Checkbox, Radio, Tooltip, Icon } from 'antd';
+import { Form, Input, Button, Checkbox, Radio, Tooltip, Icon, message } from 'antd';
 const FormItem = Form.Item;
 const RadioGroup = Radio.Group;
 var config = require('./setting.js');
 const UserPass = config.host + '/api/user/password';
 
 let Demo = React.createClass({
-    
+
     handleSubmit(e) {
         var taxno = window.localStorage.getItem('taxno');
         e.preventDefault();
@@ -32,7 +32,15 @@ let Demo = React.createClass({
             if (xhr.status == 200) {
                var res = xhr.responseText;
                var jsonObj = eval("(" + res + ")");
-               console.log(jsonObj);
+              console.log(jsonObj);
+               var status = jsonObj['status'];
+               var msg = jsonObj['msg'];
+               if(status==0)
+               {
+                   message.success(`修改成功。`);
+               }else{
+                 message.error(`${msg}, 修改失败。`);
+               }
             }
           }
         }
@@ -62,7 +70,7 @@ let Demo = React.createClass({
                     label="确认新密码：">
                     <Input type="password" {...getFieldProps('confirmpass')} placeholder="请再次输入" />
                 </FormItem>
-                
+
                 <FormItem wrapperCol={{ span: 16, offset: 6 }} style={{ marginTop: 24 }}>
                     <Button type="primary" htmlType="submit">确定</Button>
                 </FormItem>

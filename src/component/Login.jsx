@@ -1,16 +1,16 @@
 import React from 'react'
-import { Form, Input, Button } from 'antd';
+import { Form, Input, Button, message } from 'antd';
 const FormItem = Form.Item;
 var config = require('./setting.js');
 
 const LoginAddr = config.host + '/api/user/login';
 
 var LoginForm = React.createClass({
-  
+
     handleSubmit(e) {
         e.preventDefault();
         console.log('收到表单值：', this.props.form.getFieldsValue());
-    
+
         var json = this.props.form.getFieldsValue();
         var taxno = json['taxno']
         console.log(taxno);
@@ -32,20 +32,22 @@ var LoginForm = React.createClass({
                console.log(res);
                var jsonObj = eval("(" + res + ")");
                console.log(jsonObj);
-               var status = jsonObj['status']
+               var status = jsonObj['status'];
                if(status ==0){
-                 var role = jsonObj['data'];
+                 var role = jsonObj['data']['role'];
+                 var taxno = jsonObj['data']['taxno'];
                   //success
                  window.localStorage.setItem('token', 'logined');
-                 window.localStorage.setItem('role', jsonObj.data);
+                 window.localStorage.setItem('role', role);
                  window.localStorage.setItem('taxno', taxno);
                  window.location.href = "#/"+ role;
                }else{
-                 console.log(jsonObj.msg);
+                 message.error(`用户名或者密码错误，登陆失败。`);
                  window.location.href = "#/login";
                }
-              
+
             }else{
+              message.error(`请求服务器超时，登陆失败。`);
               window.location.href = "#/login";
             }
           }
@@ -56,15 +58,15 @@ var LoginForm = React.createClass({
                  window.localStorage.setItem('role', 'admin');
                  window.localStorage.setItem('taxno', 'fx000');
                  window.location.href = "#/admin";
-         */  
-       
+         */
+
     },
  componentDidMount(){
       window.localStorage.removeItem('token');
       window.localStorage.removeItem('role');
       window.localStorage.removeItem('taxno');
  },
-      
+
     render() {
         const { getFieldProps } = this.props.form;
         const formItemLayout = {
