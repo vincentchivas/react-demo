@@ -1,5 +1,4 @@
 var Config = {
-	'host': 'http://10.211.55.3:80',
+	'host': 'http://115.156.194.250:80',
 }
 module.exports = Config;
-//http://10.211.55.3:80

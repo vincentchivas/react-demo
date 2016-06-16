@@ -7,7 +7,7 @@ var config = require('./setting.js');
 const UserAddr = config.host + '/api/user/add';
 
 let Demo = React.createClass({
-    
+
     handleSubmit(e) {
         e.preventDefault();
         //console.log('收到表单值：', this.props.form.getFieldsValue());
@@ -24,7 +24,7 @@ let Demo = React.createClass({
         xhr.setRequestHeader("Content-type","application/x-www-form-urlencoded");
         xhr.onreadystatechange = function(){
           if (xhr.readyState == 4) {
-            if (xhr.status == 200) {           
+            if (xhr.status == 200) {
                var res = xhr.responseText;
                 console.log(res);
                var jsonObj = eval("(" + res + ")");
@@ -57,7 +57,7 @@ let Demo = React.createClass({
                 <FormItem
                     {...formItemLayout}
                     label="用户角色：">
-                    <RadioGroup {...getFieldProps('role', { initialValue: 'teacher' })}>                      
+                    <RadioGroup {...getFieldProps('role', { initialValue: 'teacher' })}>
                         <Radio value="teacher">教师</Radio>
                         <Radio value="admin">管理员</Radio>
                     </RadioGroup>
@@ -73,6 +73,11 @@ let Demo = React.createClass({
                     label="新人事编号：">
                     <Input type="text" placeholder="" {...getFieldProps('personno')} />
                 </FormItem>
+                <FormItem
+                   {...formItemLayout}
+                   label="身份证号：">
+                   <Input type="text" placeholder="" {...getFieldProps('idno')} />
+               </FormItem>
                 <FormItem wrapperCol={{ span: 16, offset: 6 }} style={{ marginTop: 24 }}>
                     <Button type="primary" htmlType="submit">确定</Button>
                 </FormItem>
